@@ -7,9 +7,11 @@ import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
 
 # scrape all function
+
+
 def scrape_all():
     # Set up Splinter
-    executable_path = {'executable_path' : ChromeDriverManager().install()}
+    executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
     # the goal is to return json that has all of the neccessary data, so that it
@@ -26,15 +28,13 @@ def scrape_all():
         "facts": scrape_facts_page(browser),
         "hemispheres": scrape_hemisphere(browser),
         "lastUpdated": dt. datetime.now()
-     }
-
+    }
 
     # stop the webdriver
-    #browser.quit()
+    # browser.quit()
 
     # display output
     return marsData
-    
 
 
 # scrape the mars news page
@@ -52,10 +52,9 @@ def scrape_news(browser):
 
     slide_elem = news_soup.select_one('div.list_text')
     # grabs the title
-    news_title = slide_elem,find('div', class_='content_title').get_text()
+    news_title = slide_elem, find('div', class_='content_title').get_text()
     # grabs the paragraph for the headline
     news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
-
 
 
 # scrape through the featured image page
@@ -78,34 +77,36 @@ def scrape_feature_img(browser):
     # Usse the base url to create an absolute url
     img_url = f'https://spaceimages-mars.com/{img_url_rel}'
 
-    #return the image URL
+    # return the image URL
     return img_url
 
 
-
-#scrape through the facts page
+# scrape through the facts page
 def scrape_facts_page(browser):
     # Visit URL
     url = 'https://galaxyfacts-mars.com/'
     browser.visit(url)
 
-     # Parse the resulting html with soup
-     html = browser.html
-     img_soup = soup(html, 'html.parser')
+    # Parse the resulting html with soup
+    html = browser.html
+    img_soup = soup(html, 'html.parser')
 
-     # find the facts location
-     factsLocation = fact_soup.find('div', class_="diagram mt-4")
-     factTable = factsLocation.find('table') # grab the html code for the fact table
+    # find the facts location
+    factsLocation = fact_soup.find('div', class_="diagram mt-4")
+    # grab the html code for the fact table
+    factTable = factsLocation.find('table')
 
-     # create an empty string
-     facts = ""
+    # create an empty string
+    facts = ""
 
-     # add the text to the empty string then return
-     facts += str(faceTable)
+    # add the text to the empty string then return
+    facts += str(faceTable)
 
-     return facts 
+    return facts
 
 # scrape through the hemispheres pages
+
+
 def hemispheres(browser):
     # base url
     url = "https:// marshemispheres.com/"
@@ -120,7 +121,7 @@ def hemispheres(browser):
         # hemisphere info dictionary
         hemisphereInfo = {}
 
-        # We have to find the elements on each loop to avoid a stale element exception 
+        # We have to find the elements on each loop to avoid a stale element exception
         browser.find_by_css('a.product-item img')[i].click()
 
         # We find sample image anchor tag and extract the href
